@@ -267,14 +267,14 @@ main {
 
 .picture__stat--comments::before {
   width: 20px;
-  height: 16px;
+  height: 19px;
 
   background-position: 0 -53px;
 }
 
 .picture__stat--likes::before {
   width: 20px;
-  height: 16px;
+  height: 13px;
 
   background-position: 0 -80px;
 }
@@ -890,7 +890,7 @@ main {
   top: 60px;
   left: 50%;
 
-  min-width: 600px;
+  max-width: 600px;
   min-height: 600px;
 
   padding-bottom: 60px;
@@ -981,7 +981,7 @@ main {
   background-image: url("../img/sprite.svg");
   background-size: 100%;
 
-  background-position: 0 -150px;
+  background-position: 0 -127px;
   opacity: 0.5;
 }
 
@@ -1203,6 +1203,10 @@ main {
 
 .contacts__link--vk {
   background-position: 0 -105px;
+}
+
+.social__text {
+  max-width: 90%;
 }
 
 
