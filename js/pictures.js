@@ -1,6 +1,7 @@
 'use strict';
 
 (function () {
+  var ESC_KEYCODE = 27;
   var PHOTOS_AMOUND = 25;
 
   var COMMENTS_LIST = [
@@ -66,8 +67,8 @@
   };
   photoContainer.appendChild(renderMorePhotos());
 
+
   // Блок з великим фото
-  document.querySelector('.big-picture').classList.remove('hidden');
   document.querySelector('.big-picture__img img').src = 'img/logo-background-3.jpg';
   document.querySelector('.social__header img').src = 'img/avatar-1.svg';
   document.querySelector('.social__caption').textContent =
@@ -108,4 +109,116 @@
     return comentFragment;
   };
   socialComments.appendChild(renderMoreComments());
+
+
+  // Загрузка зображення і показ форми редагування
+  var uploadFile = document.getElementById('upload-file');
+  var imgOverlay = document.querySelector('.img-upload__overlay');
+  var cancelButton = document.querySelector('.img-upload__cancel');
+
+  var onImgOverlayEscPress = function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      closeImgOverlay();
+    }
+  };
+
+  var onImgOverlayClick = function (evt) {
+    var target = evt.target;
+    if (target.classList.contains('img-upload__overlay')) {
+      closeImgOverlay();
+    }
+  };
+
+  var openImgOverlay = function () {
+    imgOverlay.classList.remove('hidden');
+    document.addEventListener('keydown', onImgOverlayEscPress);
+    imgOverlay.addEventListener('click', onImgOverlayClick);
+    effectsList.addEventListener('click', onEffectsItemClick);
+  };
+
+  var closeImgOverlay = function () {
+    imgOverlay.classList.add('hidden');
+    document.removeEventListener('keydown', onImgOverlayEscPress);
+    uploadFile.value = '';
+    imgUploadPreview.className = 'img-upload__preview';
+    imgOverlay.removeEventListener('click', onImgOverlayClick);
+    effectsList.removeEventListener('click', onEffectsItemClick);
+  };
+
+
+  uploadFile.addEventListener('change', openImgOverlay);
+  cancelButton.addEventListener('click', closeImgOverlay);
+
+  // Редагування насиченості зображення
+  var imgUploadPreview = document.querySelector('.img-upload__preview');
+  var effectsList = document.querySelector('.effects__list');
+
+  var onEffectsItemClick = function (evt) {
+    var target = evt.target;
+
+    if (target.classList.contains('effects__preview--chrome')) {
+      imgUploadPreview.className = 'img-upload__preview';
+      imgUploadPreview.classList.add('effects__preview--chrome');
+    } else if (target.classList.contains('effects__preview--sepia')) {
+      imgUploadPreview.className = 'img-upload__preview';
+      imgUploadPreview.classList.add('effects__preview--sepia');
+    } else if (target.classList.contains('effects__preview--marvin')) {
+      imgUploadPreview.className = 'img-upload__preview';
+      imgUploadPreview.classList.add('effects__preview--marvin');
+    } else if (target.classList.contains('effects__preview--phobos')) {
+      imgUploadPreview.className = 'img-upload__preview';
+      imgUploadPreview.classList.add('effects__preview--phobos');
+    } else if (target.classList.contains('effects__preview--heat')) {
+      imgUploadPreview.className = 'img-upload__preview';
+      imgUploadPreview.classList.add('effects__preview--heat');
+    } else if (target.classList.contains('effects__preview--none')) {
+      imgUploadPreview.className = 'img-upload__preview';
+      imgUploadPreview.classList.add('effects__preview--none');
+    }
+  };
+
+  // Показуємо повноекранне зображення при натисненні на одну із картинок
+  var pictureLinks = document.querySelectorAll('.picture__link');
+  var bigPicture = document.querySelector('.big-picture');
+  var bigPictureClose = document.querySelector('.big-picture__cancel');
+
+  var onBigPictureClick = function () {
+    for (var i = 0; i < pictureLinks.length; i++) {
+      (function () {
+        var pictureLink = pictureLinks[i];
+        pictureLink.addEventListener('click', function () {
+          openBigPicture();
+        });
+      })();
+    }
+  };
+  onBigPictureClick();
+
+  var onBigPictureESCPress = function (evt) {
+    if (evt.keyCode === ESC_KEYCODE) {
+      closeBigPicture();
+    }
+  };
+
+  var onBigPictureOverlayClick = function (evt) {
+    var target = evt.target;
+
+    if (target.classList.contains('big-picture')) {
+      closeBigPicture();
+    }
+  };
+
+  var openBigPicture = function () {
+    bigPicture.classList.remove('hidden');
+    bigPicture.addEventListener('click', onBigPictureOverlayClick);
+    document.addEventListener('keydown', onBigPictureESCPress);
+    bigPictureClose.addEventListener('click', closeBigPicture);
+  };
+
+  var closeBigPicture = function () {
+    bigPicture.classList.add('hidden');
+    bigPicture.removeEventListener('click', onBigPictureOverlayClick);
+    document.removeEventListener('keydown', onBigPictureESCPress);
+    bigPictureClose.removeEventListener('click', closeBigPicture);
+  };
 })();
