@@ -145,15 +145,6 @@
     effectsList.removeEventListener('click', onEffectsItemClick);
   };
 
-  var inputHashtags = document.querySelector('.text__hashtags');
-  inputHashtags.addEventListener('focus', function () {
-    document.removeEventListener('keydown', onImgOverlayEscPress);
-  });
-
-  inputHashtags.addEventListener('blur', function () {
-    document.addEventListener('keydown', onImgOverlayEscPress);
-  });
-
 
   uploadFile.addEventListener('change', openImgOverlay);
   cancelButton.addEventListener('click', closeImgOverlay);
@@ -205,7 +196,6 @@
 
   var onBigPictureESCPress = function (evt) {
     if (evt.keyCode === ESC_KEYCODE) {
-
       closeBigPicture();
     }
   };
@@ -231,34 +221,4 @@
     document.removeEventListener('keydown', onBigPictureESCPress);
     bigPictureClose.removeEventListener('click', closeBigPicture);
   };
-
-
-  // Валідація форми(Неповна)
-
-  var hashtags = document.querySelector('.text__hashtags');
-
-  hashtags.addEventListener('input', function (evt) {
-    var hashtagsList = hashtags.value.toLowerCase().split(' ');
-
-    for (var i = 0; i < hashtagsList.length; i++) {
-      var target = evt.target;
-      var hashtagsItem = hashtagsList[i];
-
-      if (hashtagsItem[0] !== '#') {
-        target.setCustomValidity('хэш-тег начинается с символа # (решётка)');
-        return;
-      } else if (hashtagsItem.length === 1) {
-        target.setCustomValidity('хеш-тег не может состоять только из одной решётки');
-      } else if (hashtagsItem.length > 20) {
-        target.setCustomValidity('максимальная длина одного хэш-тега 20 символов, включая решётку');
-      } else if (hashtagsList.length > 5) {
-        target.setCustomValidity('нельзя указать больше пяти хэш-тегов');
-      } else if (hashtagsList.indexOf(hashtagsItem) !== hashtagsList.lastIndexOf(hashtagsItem)) {
-        target.setCustomValidity('один и тот же хэш-тег не может быть использован дважды');
-      } else {
-        target.setCustomValidity('');
-      }
-    }
-  });
-
 })();
